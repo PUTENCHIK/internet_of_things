@@ -133,6 +133,7 @@ void loop() {
           timer = millis();
         } else {
           lowLeds();
+          manual_mode_timer = millis();
           highRedOrGreen();
         }
         break;
