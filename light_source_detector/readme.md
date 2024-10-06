@@ -27,3 +27,9 @@
 ## Видео демонстрация работы
 
 Ссылка на [видео](https://drive.google.com/file/d/1L1RKW4hrdXRMY9HwMnsF-QObCoRzmDAb/view?usp=sharing).
+
+## Схема решения
+
+Ссылка на [схему](https://wokwi.com/projects/410970230680787969).
+
+![Схема](scheme.png)
