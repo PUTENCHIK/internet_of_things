@@ -22,13 +22,12 @@ def get_id():
 
 def get_topic():
     keyword = "DANNY IS AMOGUS"
-    return our_hash(keyword)
+    return f"system/{our_hash(keyword)}/led/value"
 
 
 def send_command(cmd: str,
                  response_len: int,
-                 connection: serial.Serial
-    ) -> int:
+                 connection: serial.Serial) -> int:
     str_resp: int = 0
     connection.write(cmd.encode())
     if response_len > 0:
@@ -40,9 +39,20 @@ def send_command(cmd: str,
 
 def config():
     obj = {
-        "responses": {'d': 7,
-                      'u': 6,
-                      'p': 1,},
+        "responses": {
+            'photo': {
+                'command': 'p',
+                'value': 1
+            },
+            'up': {
+                'command': 'u',
+                'value': 6
+            },
+            'down': {
+                'command': 'd',
+                'value': 7
+            },
+        },
         "LIMIT_1023": 500,
     }
     obj["LIMIT_255"] = obj['LIMIT_1023'] // 4
