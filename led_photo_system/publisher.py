@@ -1,3 +1,4 @@
+import time
 import serial
 import paho.mqtt.client as mqtt_client
 from common import (
@@ -21,6 +22,8 @@ port_photo = "COM4"
 responses = config()['responses']
 command = responses['photo']['command']
 command_value = responses['photo']['value']
+delay = config()['DELAY_SEC']
+
 connection_photo = serial.Serial(port_photo, timeout=1)
 
 print("Connecting to broker:", broker)
@@ -34,8 +37,9 @@ try:
                                            command_value,
                                            connection_photo)
 
-        # print(f"Value: {photo_val_resp}")
+        print(f"Value: {photo_val_resp}")
         client.publish(topic, photo_val_resp)
+        time.sleep(delay)
 except KeyboardInterrupt:
     pass
 finally:
