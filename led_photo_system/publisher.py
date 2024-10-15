@@ -1,17 +1,17 @@
 import serial
 import paho.mqtt.client as mqtt_client
 import time
+from common import get_id, get_topic
+
 
 broker = "broker.emqx.io"
+pub_id = get_id()
+topic = get_topic()
 
-# client = mqtt_client.Client('isu100123234235')
-# FOR new version change ABOVE line to
 client = mqtt_client.Client(
-   mqtt_client.CallbackAPIVersion.VERSION1,
-   'DANNY_DOT_COM_1001230034'
+   mqtt_client.CallbackAPIVersion.VERSION2,
+   pub_id
 )
-
-pub_id = "bc27bab771"
 
 print("Connecting to broker", broker)
 print(client.connect(broker))
