@@ -54,6 +54,7 @@ def config():
             },
         },
         "LIMIT_1023": 500,
+        "DELAY_SEC": 1,
     }
     obj["LIMIT_255"] = obj['LIMIT_1023'] // 4
 
