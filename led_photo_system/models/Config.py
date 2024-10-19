@@ -1,8 +1,8 @@
 import hashlib
 from uuid import getnode as get_mac
 
-from Command import Command
-from Topic import Topic
+from models.Command import Command
+from models.Topic import Topic
 
 
 class Config:
@@ -30,6 +30,10 @@ class Config:
 
     isHardcode = True
     unique_id = our_hash("DANNY IS AMOGUS") if isHardcode else None
+    common_topic = f"led/{unique_id}/photo/"
 
-    topics = [Topic("average", True), Topic("instant", True)]
+    topics = [
+        Topic(common_topic + "average", True), 
+        Topic(common_topic + "instant", True)
+    ]
 
