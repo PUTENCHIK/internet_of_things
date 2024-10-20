@@ -1,45 +1,45 @@
 import time
-import serial
 import paho.mqtt.client as mqtt_client
-from common import (
-    get_id,
-    get_topic,
-    send_command,
-    config
-)
+from models.Config import Config
+from models.Photo import Photo
 
+
+def on_message(client, userdata, message):
+    if message.topic == Config.controller_mode_topic:
+        data = str(message.payload.decode("utf-8"))
+        target, mode = data.split()
+        if target == Photo.name or Config.all:
+            try:
+                connection_photo.set_mode(mode)
+            except ValueError:
+                print(f"Wrong mode for {Photo.name}")
+            
 
 broker = "broker.emqx.io"
-pub_id = get_id()
-topic = get_topic()
+pub_id = Config.get_client_id()
+delay = 0.5
 
 client = mqtt_client.Client(
    mqtt_client.CallbackAPIVersion.VERSION2,
    pub_id
 )
 
-port_photo = "COM4"
-responses = config()['responses']
-command = responses['photo']['command']
-command_value = responses['photo']['value']
-delay = config()['DELAY_SEC']
+client.on_message = on_message
 
-connection_photo = serial.Serial(port_photo, timeout=1)
+port_photo = "/dev/ttyUSB0"
+connection_photo = Photo(port_photo)
 
-print("Connecting to broker:", broker)
-print(client.connect(broker))
+client.connect(broker)
 client.loop_start()
 print("Publishing starts")
 
 try:
     while True:
-        photo_val_resp: int = send_command(command,
-                                           command_value,
-                                           connection_photo)
+        if connection_photo.is_delay_passed():
+            value: int = connection_photo.current_mode()
+            connection_photo.update_track()
+            print("Value:", value)
 
-        print(f"Value: {photo_val_resp}")
-        client.publish(topic, photo_val_resp)
-        time.sleep(delay)
 except KeyboardInterrupt:
     pass
 finally:

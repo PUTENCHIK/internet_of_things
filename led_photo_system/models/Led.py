@@ -1,10 +1,10 @@
 from Microcontroller import Microcontroller
-from Command import Command
+from models.Config import Config
 
 
 class Led(Microcontroller):
-    command_up = Command('u', 6)
-    command_down = Command('d', 7)
+    command_up = Config.command_up_led
+    command_down = Config.command_down_led
 
     def __init__(self, port: int):
         super().__init__(port)
