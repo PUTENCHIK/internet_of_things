@@ -2,7 +2,6 @@ import hashlib
 from uuid import getnode as get_mac
 
 from models.Command import Command
-from models.Topic import Topic
 
 
 class Config:
@@ -21,6 +20,7 @@ class Config:
         return id
 
 
+    all = "all"
     command_photo = Command('p', 1)
     command_up_led = Command('u', 6)
     command_down_led = Command('d', 7)
@@ -32,8 +32,7 @@ class Config:
     unique_id = our_hash("DANNY IS AMOGUS") if isHardcode else None
     common_topic = f"led/{unique_id}/photo/"
 
-    topics = [
-        Topic(common_topic + "average", True), 
-        Topic(common_topic + "instant", True)
-    ]
+    # Topic for setting mode to Led or Photo from controller.py
+    controller_mode_topic = f"led/{unique_id}/controller/mode"
+
 
