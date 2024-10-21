@@ -11,13 +11,17 @@ class Config:
         h.update(str(string).encode())
 
         return h.hexdigest()[:20]
-    
+
     @staticmethod
     def get_client_id():
         mac = get_mac()
         id = Config.our_hash(mac)
 
         return id
+
+    @staticmethod
+    def get_topic(mode):
+        return Config.common_topic + mode
 
 
     all = "all"
@@ -34,5 +38,5 @@ class Config:
 
     # Topic for setting mode to Led or Photo from controller.py
     controller_mode_topic = f"led/{unique_id}/controller/mode"
-
-
+    threshold_min_topic = f"led/{unique_id}/photo/min"
+    threshold_max_topic = f"led/{unique_id}/photo/max"

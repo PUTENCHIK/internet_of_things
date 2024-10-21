@@ -1,102 +1,69 @@
 import time
 import paho.mqtt.client as mqtt_client
-import serial
-from common import get_id, get_topic, send_command, config
-from collections import deque
+from models.Config import Config
+from models.Led import Led
+from models.Photo import Photo
 
 
-def average(numbers):
-    return sum(numbers) / len(numbers)
+config = Config()
 
+broker = "broker.emqx.io"
+sub_id = config.get_client_id()
 
 port_led = "COM5"
 
-connection_led = serial.Serial(port_led, timeout=1)
+connection_led = Led(port_led)
+controller_mode_topic = config.controller_mode_topic
 
-config = config()
-
-broker = "broker.emqx.io"
-sub_id = get_id()
-
-controller_topic = "led/controller"
-threshold_min_topic = "lab/UNIQUE_ID/photo/min"
-threshold_max_topic = "lab/UNIQUE_ID/photo/max"
-
-current_sub_mode = "average"
-current_pub_mode = "instant"
-
-current_data_topic = "lab/UNIQUE_ID/photo/average"
-
-len_average = 20
-old_average = 1023
-average_values = deque()
-threshold_min = 0
-threshold_max = 1023
+connection_led.current_data_topic = config.get_topic(Photo.mode)
 
 
 def on_message(client, userdata, message):
-    global current_sub_mode
-    global current_pub_mode
-    global current_data_topic
-    global old_average
-    global average_values
-    global threshold_min
-    global threshold_max
-
     data = str(message.payload.decode("utf-8"))
-    # photo_val_resp = int(data)
 
-    if message.topic == controller_topic:
+    if message.topic == config.controller_mode_topic:
+        data = str(message.payload.decode("utf-8"))
         target, mode = data.split()
 
-        if target == 'led' and current_sub_mode != mode:
-            current_sub_mode = mode
-            if current_sub_mode == "average":
-                average_values = deque()
-                old_average = 1023
-            elif current_sub_mode == 'threshold':
-                client.subscribe(threshold_min_topic)
-                client.subscribe(threshold_max_topic)
+        if target == Led.name:
+            if mode == 'threshold':
+                client.subscribe(config.threshold_min_topic)
+                client.subscribe(config.threshold_max_topic)
+            else:
+                client.unsubscribe(config.threshold_min_topic)
+                client.unsubscribe(config.threshold_max_topic)
 
-        elif target == 'all' and current_pub_mode != mode:
-            client.unsubscribe(current_data_topic)
+            try:
+                connection_led.set_mode(mode)
+            except ValueError:
+                print(f"Wrong mode for {Led.name}")
 
-            current_pub_mode = mode
-            current_data_topic = "lab/UNIQUE_ID/photo/average"
+        elif target == config.all and connection_led.current_data_topic != mode:
+            client.unsubscribe(connection_led.current_data_topic)
 
-            client.subscribe(current_data_topic)
+            connection_led.current_data_topic = config.get_topic(mode)
 
-    elif message.topic == threshold_min_topic:
+            client.subscribe(connection_led.current_data_topic)
+
+    elif message.topic == config.threshold_min_topic:
         photo_val_resp = int(data)
-        threshold_min = photo_val_resp
+        connection_led.threshold_min = photo_val_resp
 
-    elif message.topic == threshold_max_topic:
+    elif message.topic == config.threshold_max_topic:
         photo_val_resp = int(data)
-        threshold_max = photo_val_resp
+        connection_led.threshold_max = photo_val_resp
 
     else:
         photo_val_resp = int(data)
 
-        if current_sub_mode == "average":
-            if average_values != len_average:
-                average_values.append(photo_val_resp)
-            else:
-                average_values.popleft()
-                average_values.append(photo_val_resp)
+        led_command: str = connection_led.current_mode(photo_val_resp)
 
-            new_average = average(average_values)
-            led_command = 'up' if new_average < old_average else 'down'
-
-            old_average = new_average
-
-            send_command(config["responses"][led_command]['command'], config["responses"][led_command]['value'],
-                         connection_led)
-
-        elif current_sub_mode == "threshold":
-            led_command = 'up' if photo_val_resp > average([threshold_min, threshold_max]) else 'down'
-
-            send_command(config["responses"][led_command]['command'], config["responses"][led_command]['value'],
-                         connection_led)
+        if led_command == 'up':
+            connection_led.send_command(config.command_up_led.command, config.command_up_led.length)
+        elif led_command == 'down':
+            connection_led.send_command(config.command_down_led.command, config.command_down_led.length)
+        elif led_command == 'wait':
+            return
 
 
 client = mqtt_client.Client(
@@ -111,8 +78,8 @@ try:
     client.connect(broker)
     client.loop_start()
     print("Subcribing")
-    client.subscribe(current_data_topic)
-    client.subscribe(controller_topic)
+    client.subscribe(connection_led.current_data_topic)
+    client.subscribe(controller_mode_topic)
     time.sleep(1800)
 except KeyboardInterrupt:
     pass
