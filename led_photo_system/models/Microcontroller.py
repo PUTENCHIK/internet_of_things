@@ -8,7 +8,6 @@ class Microcontroller:
         self.port = port
         self.connection = serial.Serial(self.port, timeout=1)
         self.mode = None
-        self.isThreshold = False
 
     def send_command(self, command: str, length: int) -> int:
         int_resp: int = 0
