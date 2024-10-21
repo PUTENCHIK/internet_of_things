@@ -31,7 +31,7 @@ def on_message(client, userdata, message):
             if mode == 'threshold':
                 client.subscribe(config.threshold_min_topic)
                 client.subscribe(config.threshold_max_topic)
-            else:
+            elif mode == 'average':
                 client.unsubscribe(config.threshold_min_topic)
                 client.unsubscribe(config.threshold_max_topic)
 
@@ -84,8 +84,6 @@ try:
     print("Subcribing")
     client.subscribe(connection_led.current_data_topic)
     client.subscribe(controller_mode_topic)
-    client.subscribe(config.threshold_min_topic)
-    client.subscribe(config.threshold_max_topic)
     time.sleep(1800)
 except KeyboardInterrupt:
     pass
