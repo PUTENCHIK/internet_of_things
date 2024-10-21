@@ -1,5 +1,5 @@
-from Microcontroller import Microcontroller
-from models.Config import Config
+from led_photo_system.models.Microcontroller import Microcontroller
+from led_photo_system.models.Config import Config
 from collections import deque
 from led_photo_system.models.Mode import Mode
 
@@ -43,7 +43,7 @@ class Led(Microcontroller):
                                  Led.command_down.length)
 
     def average(self, photo_val_resp) -> str:
-        if self.average_values != self.len_average:
+        if len(self.average_values) != self.len_average:
             self.average_values.append(photo_val_resp)
 
             return 'wait'

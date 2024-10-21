@@ -1,8 +1,7 @@
 import time
 import paho.mqtt.client as mqtt_client
-from models.Config import Config
-from models.Led import Led
-from models.Photo import Photo
+from led_photo_system.models.Config import Config
+from led_photo_system.models.Led import Led
 
 
 config = Config()
@@ -15,11 +14,14 @@ port_led = "COM5"
 connection_led = Led(port_led)
 controller_mode_topic = config.controller_mode_topic
 
-connection_led.current_data_topic = config.get_topic(Photo.mode)
+connection_led.current_data_topic = config.get_topic('instant')
 
 
 def on_message(client, userdata, message):
     data = str(message.payload.decode("utf-8"))
+
+    print("Топик:", message.topic)
+    print("Сообщение:", data)
 
     if message.topic == config.controller_mode_topic:
         data = str(message.payload.decode("utf-8"))
@@ -58,6 +60,8 @@ def on_message(client, userdata, message):
 
         led_command: str = connection_led.current_mode(photo_val_resp)
 
+        print("Состояние:", led_command)
+
         if led_command == 'up':
             connection_led.send_command(config.command_up_led.command, config.command_up_led.length)
         elif led_command == 'down':
@@ -80,6 +84,8 @@ try:
     print("Subcribing")
     client.subscribe(connection_led.current_data_topic)
     client.subscribe(controller_mode_topic)
+    client.subscribe(config.threshold_min_topic)
+    client.subscribe(config.threshold_max_topic)
     time.sleep(1800)
 except KeyboardInterrupt:
     pass
