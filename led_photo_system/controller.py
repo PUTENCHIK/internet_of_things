@@ -23,8 +23,11 @@ try:
     while True:
         command = input("Input (<target> <mode>): ")
 
-        print(f"Command: {command}")
-        client.publish(controller_topic, command)
+        if len(command.split()) == 2:
+            print(f"Command: {command}")
+            client.publish(controller_topic, command)
+        else:
+            print(f"Wrong command format")
 
 except KeyboardInterrupt:
     pass
