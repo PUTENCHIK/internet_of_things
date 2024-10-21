@@ -17,9 +17,9 @@ class Photo(Microcontroller):
     def __init__(self, port: int):
         super().__init__(port)
         self.MODES = {
-            'instant': Mode('instant', self.instant),
+            'instant': Mode('instant', self.instant, 2),
             'average': Mode('average', self.average),
-            'stream': Mode('stream', self.stream, 0.2),
+            'stream': Mode('stream', self.stream, 0.5),
         }
         self.track = time.time()
         self.track_mim_max = time.time()
@@ -36,6 +36,7 @@ class Photo(Microcontroller):
         super().set_mode(mode)
         self.min = Photo.default_min
         self.max = Photo.default_max
+        self.deque = deque()
     
     def get_topic(self):
         return self.get_mode().get_topic()
@@ -53,7 +54,7 @@ class Photo(Microcontroller):
     def update_min_max(self, value: int):
         if value > self.max:
             self.max = value
-        elif value < self.min:
+        if value < self.min:
             self.min = value
 
     def current_mode(self) -> tuple:

@@ -8,6 +8,7 @@ def on_message(client, userdata, message):
     if message.topic == Config.controller_mode_topic:
         data = str(message.payload.decode("utf-8"))
         target, mode = data.split()
+        print(target, mode)
         if target == Photo.name or Config.all:
             try:
                 connection_photo.set_mode(mode)
@@ -23,6 +24,8 @@ client = mqtt_client.Client(
    pub_id
 )
 
+print(pub_id)
+
 client.on_message = on_message
 
 port_photo = "/dev/ttyUSB0"
@@ -30,6 +33,7 @@ connection_photo = Photo(port_photo)
 
 client.connect(broker)
 client.loop_start()
+client.subscribe(Config.controller_mode_topic)
 print("Publishing starts")
 
 try:
