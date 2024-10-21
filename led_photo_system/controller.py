@@ -1,28 +1,29 @@
 import paho.mqtt.client as mqtt_client
-from common import (
-    get_id,
-)
+from models.Config import Config
+from secrets import token_hex
 
 
 broker = "broker.emqx.io"
-pub_id = get_id()
-controller_topic = "led/controller"
+con_id = Config.get_client_id() + token_hex(2)
+controller_topic = Config.controller_mode_topic
 
 client = mqtt_client.Client(
    mqtt_client.CallbackAPIVersion.VERSION2,
-   pub_id
+   con_id
 )
 
+print(con_id)
 
-print(client.connect(broker))
+
+client.connect(broker)
 client.loop_start()
 print("Controller publishing starts")
 
 try:
     while True:
-        command = input()
+        command = input("Input (<target> <mode>): ")
 
-        print(f"Value: {command}")
+        print(f"Command: {command}")
         client.publish(controller_topic, command)
 
 except KeyboardInterrupt:
