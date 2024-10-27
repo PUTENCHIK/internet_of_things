@@ -17,12 +17,12 @@ class Photo(Microcontroller):
     def __init__(self, port: int):
         super().__init__(port)
         self.MODES = {
-            'instant': Mode('instant', self.instant, 2),
+            'instant': Mode('instant', self.instant),
             'average': Mode('average', self.average),
             'stream': Mode('stream', self.stream, 0.5),
         }
         self.track = time.time()
-        self.track_mim_max = time.time()
+        self.track_min_max = time.time()
         self.deque = deque()
 
         self.mode = Photo.default_mode
