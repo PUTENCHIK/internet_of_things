@@ -5,6 +5,7 @@
 
 int value;
 unsigned long timer = millis();
+char tab2[1024];
 
 
 void setup() {
@@ -17,6 +18,8 @@ void setup() {
 
 void loop() {
     mqtt_cli.loop();
+//    mqtt_cli.publish("system/photo/message", "hello!");
+//    delay(1900);
 
     if (mode == PUB_MODE) {
         if (Serial.available()) {
@@ -28,10 +31,9 @@ void loop() {
         if (millis() - timer > PUB_DELAY) {
             value = analogRead(PHOTO_PIN);
             Serial.println("Value: " + String(value));
-            
-            mqtt_cli.publish(const_cast<char*>((topic_template + topic).c_str()),
-                             const_cast<char*>(String(value).c_str()));
-            // mqtt_cli.publish("system/photo/message", "550");
+
+            String full_topic = topic_template + topic;
+            mqtt_cli.publish(full_topic.c_str(), String(value).c_str());
 
             timer = millis();
         }

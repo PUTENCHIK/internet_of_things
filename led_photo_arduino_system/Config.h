@@ -18,4 +18,4 @@ char* mqtt_broker = "broker.emqx.io";
 const int mqtt_port = 1883;
 
 String topic_template = "system/photo/";
-String topic = "";
+String topic = "message";
