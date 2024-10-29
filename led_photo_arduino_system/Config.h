@@ -5,6 +5,8 @@ const char SUB_MODE = 's';
 const char PUB_MODE = 'p';
 char mode = PUB_MODE;
 
+const int PUB_DELAY = 1000;
+
 String ssidAP = "ESP_MAXY_GLEBBY"; // имя контроллера и точки доступа
 String passwordAP = "test12345"; // пароль точки доступа
 
