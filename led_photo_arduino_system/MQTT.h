@@ -18,8 +18,8 @@ void MQTT_init(){
     mqtt_cli.setCallback(callback);
     while (!mqtt_cli.connected()) {
         String client_id = "esp8266-" + String(WiFi.macAddress());
-        Serial.print("The client " + client_id);
-        Serial.println(" connects to the public mqtt broker\n");
+//        Serial.print("The client " + client_id);
+//        Serial.println(" connects to the public mqtt broker\n");
         if (mqtt_cli.connect(client_id.c_str())){
             Serial.println("MQTT Connected");
         } else {

@@ -43,6 +43,6 @@ void WIFI_init(bool mode_ap) {
       StartCLIMode();
       ip = WiFi.localIP().toString();
     }
-    Serial.println("IP address: ");
-    Serial.println(ip);  
+//    Serial.println("IP address: ");
+//    Serial.println(ip);  
 }
