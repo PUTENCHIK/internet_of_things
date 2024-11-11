@@ -15,6 +15,7 @@ char passwordCLI[max_password_name];
 
 long int timer = millis();
 int LED_PIN = 2;
+int LAMP_PIN = 3;
 int led_stage = 1;
 bool isStageChanged = false;
 

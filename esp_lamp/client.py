@@ -44,11 +44,11 @@ while True:
     now = datetime.datetime.now()
 
     if now.second == low_second_threshold and state != "HIGH":
-        client.publish(topic, 'HIGH')
+        client.publish(topic, 1)
         print("HIGH")
         state = "HIGH"
     elif now.second == high_second_threshold and state != "LOW":
-        client.publish(topic, 'LOW')
+        client.publish(topic, 0)
         print("LOW")
         state = "LOW"
 
