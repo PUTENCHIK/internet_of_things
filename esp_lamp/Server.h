@@ -1,23 +1,29 @@
 #include <ESP8266WebServer.h>
 
-ESP8266WebServer server(80);    
+ESP8266WebServer server(5000);    
 
-void handleRoot() {                         
+void handleRoot() {
   server.send(200, 
               "text/html", 
-              "<form action=\"/LED\" method=\"POST\"><input type=\"submit\" value=\"Toggle LED\"></form>");
+              "<form action='/config' method='POST'><input name='name' type='text' placeholder='Enter WiFi name'> <br> <input name='password' type='password' placeholder='Enter WiFi password'> <br> <input type='submit' value='Send'></form>");
 }
 
-void handleLED() {                          
-  digitalWrite(LED_PIN, !digitalRead(LED_PIN));
-  server.sendHeader("Location","/"); // redirection to keep button on the screen
+void handleConfig() {                          
+  String name = server.arg("name");
+  String password = server.arg("password");
+  Serial.println("New name: " + name);
+  Serial.println("New password: " + password);
+
+  name.toCharArray(ssidCLI, sizeof(ssidCLI));
+  password.toCharArray(passwordCLI, sizeof(passwordCLI));
+  EEPROM.put(0, ssidCLI);
+  EEPROM.put(max_password_name, passwordCLI);
+  EEPROM.commit();
+
+  state = only_int_state;
+  
+  server.sendHeader("Location", "/");
   server.send(303);
-}
-
-void handleSENSOR() {                          
-  int data = analogRead(A0);
-  //server.sendHeader("Location","/");
-  server.send(200, "text/html", String(data));
 }
 
 void handleNotFound(){
@@ -26,8 +32,7 @@ void handleNotFound(){
 
 void server_init() {
   server.on("/", HTTP_GET, handleRoot);     
-  server.on("/LED", HTTP_POST, handleLED);  
-  server.on("/SENSOR", HTTP_GET, handleSENSOR);  
+  server.on("/config", HTTP_POST, handleConfig);  
   server.onNotFound(handleNotFound);        
 
   server.begin();                          
