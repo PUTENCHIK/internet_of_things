@@ -66,7 +66,6 @@ void led_indication() {
 void loop() {
     server.handleClient();
     led_indication();
-
     char wifi[20];
     char password[20];
     EEPROM.get(0, wifi);
