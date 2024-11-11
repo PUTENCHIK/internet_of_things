@@ -21,6 +21,7 @@ void handleConfig() {
   EEPROM.commit();
 
   state = only_int_state;
+  isStateChanged = true;
   
   server.sendHeader("Location", "/");
   server.send(303);

@@ -66,19 +66,31 @@ void led_indication() {
 void loop() {
     server.handleClient();
     led_indication();
-    char wifi[20];
-    char password[20];
-    EEPROM.get(0, wifi);
-    EEPROM.get(max_password_name, password);
-    if (wifi[0] != '\0' && password[0] != '\0') {
-      String wf(wifi);
-      String pw(password);
-      
-      Serial.println("Name: " + wf + "; password: " + pw);
 
-      
-    } else {
-      Serial.println("Empty");
+    if (isStateChanged) {
+      isStateChanged = false;
+      switch (state) {
+        case own_ap_state:
+          break;
+        case int_mqtt_state:
+          break;
+        case only_int_state:
+          WIFI_init(false);
+          break;
+      }
     }
-    delay(1000);
+    
+//    EEPROM.get(0, ssidAP);
+//    EEPROM.get(max_password_name, passwordAP);
+//    if (wifi[0] != '\0' && password[0] != '\0') {
+//      String wf(wifi);
+//      String pw(password);
+//      
+//      Serial.println("Name: " + wf + "; password: " + pw);
+//
+//      
+//    } else {
+//      Serial.println("Empty");
+//    }
+//    delay(1000);
 }

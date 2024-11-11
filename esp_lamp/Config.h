@@ -22,4 +22,4 @@ const int long_led_delay = 1000;
 const int short_led_delay = 250;
 
 int state = own_ap_state;
-
+bool isStateChanged = false;
