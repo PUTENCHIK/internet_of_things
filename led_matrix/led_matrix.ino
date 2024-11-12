@@ -16,9 +16,28 @@
 #define c7 3          // gray left
 #define c8 5          // blue left
 
+const int n = 8;
 
-int arr[8][8] = {{0, 1, 0, 0, 0, 1, 0},};
-int rows[8] = {r1, r2, r3, r4, r5, r6, r7, r8}; 
+int rows[n] = {r1, r2, r3, r4, r5, r6, r7, r8}; 
+
+
+int heart[n][n] = {{0, 1, 1, 0, 0, 1, 1, 0},
+                   {1, 1, 1, 1, 1, 1, 1, 1},
+                   {1, 1, 1, 1, 1, 1, 1, 1},
+                   {1, 1, 1, 1, 1, 1, 1, 1},
+                   {0, 1, 1, 1, 1, 1, 1, 0},
+                   {0, 0, 1, 1, 1, 1, 0, 0},
+                   {0, 0, 1, 1, 1, 1, 0, 0},
+                   {0, 0, 0, 1, 1, 0, 0, 0}};
+
+int human[n][n] = {{0, 0, 0, 1, 1, 0, 0, 0},
+                   {0, 0, 0, 1, 1, 0, 0, 0},
+                   {1, 1, 1, 1, 1, 1, 1, 1},
+                   {1, 0, 1, 1, 1, 1, 0, 1},
+                   {1, 0, 1, 1, 1, 1, 0, 1},
+                   {0, 0, 1, 0, 0, 1, 0, 0},
+                   {0, 0, 1, 0, 0, 1, 0, 0},
+                   {0, 0, 1, 0, 0, 1, 0, 0}};
 
 
 void showFrame(int numberRow, int arr[8]) {
@@ -40,24 +59,6 @@ void showFrame(int numberRow, int arr[8]) {
     digitalWrite(c8, arr[7]);
 }
 
-
-int heart[8][8] = {{0, 1, 1, 0, 0, 1, 1, 0},
-                   {1, 1, 1, 1, 1, 1, 1, 1},
-                   {1, 1, 1, 1, 1, 1, 1, 1},
-                   {1, 1, 1, 1, 1, 1, 1, 1},
-                   {0, 1, 1, 1, 1, 1, 1, 0},
-                   {0, 0, 1, 1, 1, 1, 0, 0},
-                   {0, 0, 1, 1, 1, 1, 0, 0},
-                   {0, 0, 0, 1, 1, 0, 0, 0}};
-
-int human[8][8] = {{0, 0, 0, 1, 1, 0, 0, 0},
-                   {0, 0, 0, 1, 1, 0, 0, 0},
-                   {1, 1, 1, 1, 1, 1, 1, 1},
-                   {1, 0, 1, 1, 1, 1, 0, 1},
-                   {1, 0, 1, 1, 1, 1, 0, 1},
-                   {0, 0, 1, 0, 0, 1, 0, 0},
-                   {0, 0, 1, 0, 0, 1, 0, 0},
-                   {0, 0, 1, 0, 0, 1, 0, 0}};
 
 
 void setup() {
@@ -81,43 +82,9 @@ void setup() {
 }
 
 void loop() {
-    digitalWrite(r1, HIGH);
-    digitalWrite(r2, LOW);
-    digitalWrite(r3, LOW);
-    digitalWrite(r4, LOW);
-    digitalWrite(r5, LOW);
-    digitalWrite(r6, LOW);
-    analogWrite(r7, 0);
-    analogWrite(r8, 0);
+    for (int i = 0; i < n; i++) {
+        showFrame(i, heart[i]);
+    }
 
-    digitalWrite(c1, HIGH);
-    digitalWrite(c2, LOW);
-    digitalWrite(c3, HIGH);
-    digitalWrite(c4, HIGH);
-    digitalWrite(c5, HIGH);
-    digitalWrite(c6, HIGH);
-    digitalWrite(c7, LOW);
-    digitalWrite(c8, HIGH);
-
-    delay(7);
-
-    digitalWrite(r1, LOW);
-    digitalWrite(r2, HIGH);
-    digitalWrite(r3, LOW);
-    digitalWrite(r4, LOW);
-    digitalWrite(r5, LOW);
-    digitalWrite(r6, LOW);
-    analogWrite(r7, 0);
-    analogWrite(r8, 0);
-
-    digitalWrite(c1, LOW);
-    digitalWrite(c2, LOW);
-    digitalWrite(c3, LOW);
-    digitalWrite(c4, LOW);
-    digitalWrite(c5, LOW);
-    digitalWrite(c6, LOW);
-    digitalWrite(c7, LOW);
-    digitalWrite(c8, LOW);
-
-    delay(7);
+    delay(3);
 }
