@@ -43,22 +43,35 @@ int human[n][n] = {{0, 0, 0, 1, 1, 0, 0, 0},
                    {0, 0, 1, 0, 0, 1, 0, 0}};
 
 
+void myDigitalWrite(int pin, int value) {
+    if (pin < 8) {
+        if (value) {
+            PORTD = PORTD ^ (1 << pin);
+        }
+        else {
+            PORTD = PORTD ^ !(1 << pin);
+        }
+        
+    }
+}
+
 void showFrame(int numberRow, int arr[8]) {
 
-    digitalWrite(c1, !arr[0]);
-    digitalWrite(c2, !arr[1]);
-    digitalWrite(c3, !arr[2]);
-    digitalWrite(c4, !arr[3]);
-    digitalWrite(c5, !arr[4]);
-    digitalWrite(c6, !arr[5]);
-    digitalWrite(c7, !arr[6]);
-    digitalWrite(c8, !arr[7]);
+
+    myDigitalWrite(c1, !arr[0]);
+    myDigitalWrite(c2, !arr[1]);
+    myDigitalWrite(c3, !arr[2]);
+    myDigitalWrite(c4, !arr[3]);
+    myDigitalWrite(c5, !arr[4]);
+    myDigitalWrite(c6, !arr[5]);
+    myDigitalWrite(c7, !arr[6]);
+    myDigitalWrite(c8, !arr[7]);
     
     if (numberRow >= 6) {
         analogWrite(rows[numberRow], 1023);
     }
     else {
-        digitalWrite(rows[numberRow], HIGH);
+        digitalWrite(rows[numberRow], 1);
     }
 }
 
@@ -85,32 +98,18 @@ void reset() {
 
 
 void setup() {
-  pinMode(r1, OUTPUT);
-  pinMode(r2, OUTPUT);
-  pinMode(r3, OUTPUT);
-  pinMode(r4, OUTPUT);
-  pinMode(r5, OUTPUT);
-  pinMode(r6, OUTPUT);
-  pinMode(r7, OUTPUT);
-  pinMode(r8, OUTPUT);
+    DDRD = DDRD | (1 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (1 << 3) | (1 << 2) | (1 << 1) | (1 << 0);
+    DDRB = DDRB | (1 << 5) | (1 << 4) | (1 << 3) | (1 << 2) | (1 << 1) | (1 << 0);
+    DDRC = DDRC | (1 << 1) | (1 << 0);
 
-  pinMode(c1, OUTPUT);
-  pinMode(c2, OUTPUT);
-  pinMode(c3, OUTPUT);
-  pinMode(c4, OUTPUT);
-  pinMode(c5, OUTPUT);
-  pinMode(c6, OUTPUT);
-  pinMode(c7, OUTPUT);
-  pinMode(c8, OUTPUT);
+    cli(); // stop interrupts
+    // 16мкс * 64 = 1024мкс ~ 1мс
+    TCCR2A = 0;
+    TCCR2B = 0;
+    TCCR2B = TCCR2B | (1 << CS11)| (1 << CS10);
 
-  cli(); // stop interrupts
-  // 16мкс * 64 = 1024мкс ~ 1мс
-  TCCR2A = 0;
-  TCCR2B = 0;
-  TCCR2B = TCCR2B | (1 << CS11)| (1 << CS10);
-
-  TIMSK2 = TIMSK2 | (1 << TOIE2); 
-  sei(); // allow interrupts
+    TIMSK2 = TIMSK2 | (1 << TOIE2); 
+    sei(); // allow interrupts
 }
 
 ISR(TIMER2_OVF_vect) {
