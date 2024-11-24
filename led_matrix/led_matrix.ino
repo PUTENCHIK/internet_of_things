@@ -43,6 +43,7 @@ int human[n][n] = {{0, 0, 0, 1, 1, 0, 0, 0},
                    {0, 0, 1, 0, 0, 1, 0, 0}};
 
 
+
 void myDigitalWrite(int pin, int value) {
     if (pin < 8) {
         if (value) {
@@ -51,13 +52,26 @@ void myDigitalWrite(int pin, int value) {
         else {
             PORTD = PORTD ^ !(1 << pin);
         }
-        
+    }
+    else if (pin == A0 || pin == A1) {
+        if (value) {
+            PORTC = PORTC ^ (1 << pin);
+        }
+        else {
+            PORTC = PORTC ^ !(1 << pin);
+        }
+    }
+    else if (pin >= 8) {
+        if (value) {
+            PORTB = PORTB ^ (1 << (pin - 8));
+        }
+        else {
+            PORTB = PORTB ^ !(1 << (pin - 8));
+        }
     }
 }
 
 void showFrame(int numberRow, int arr[8]) {
-
-
     myDigitalWrite(c1, !arr[0]);
     myDigitalWrite(c2, !arr[1]);
     myDigitalWrite(c3, !arr[2]);
@@ -71,7 +85,7 @@ void showFrame(int numberRow, int arr[8]) {
         analogWrite(rows[numberRow], 1023);
     }
     else {
-        digitalWrite(rows[numberRow], 1);
+        myDigitalWrite(rows[numberRow], 1);
     }
 }
 
