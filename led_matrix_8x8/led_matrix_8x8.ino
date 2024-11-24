@@ -42,68 +42,33 @@ int human[n][n] = {{0, 0, 0, 1, 1, 0, 0, 0},
 
 
 void showFrame(int numberRow, int arr[8]) {
-    
-    if (numberRow >= 6) {
-        analogWrite(rows[numberRow], 1023);
+    digitalWrite(rows[numberRow], 1);
+    for (int i = 0; i < n; i++) {
+        digitalWrite(columns[i], !arr[0]);
     }
-    else {
-        digitalWrite(rows[numberRow], HIGH);
-    }
-
-    digitalWrite(c1, !arr[0]);
-    digitalWrite(c2, !arr[1]);
-    digitalWrite(c3, !arr[2]);
-    digitalWrite(c4, !arr[3]);
-    digitalWrite(c5, !arr[4]);
-    digitalWrite(c6, !arr[5]);
-    digitalWrite(c7, !arr[6]);
-    digitalWrite(c8, !arr[7]);
 }
 
 
 void reset() {
-    digitalWrite(r1, 0);
-    digitalWrite(r2, 0);
-    digitalWrite(r3, 0);
-    digitalWrite(r4, 0);
-    digitalWrite(r5, 0);
-    digitalWrite(r6, 0);
-    analogWrite(r7, 0);
-    analogWrite(r8, 0);
-  
-    digitalWrite(c1, 0);
-    digitalWrite(c2, 0);
-    digitalWrite(c3, 0);
-    digitalWrite(c4, 0);
-    digitalWrite(c5, 0);
-    digitalWrite(c6, 0);
-    digitalWrite(c7, 0);
-    digitalWrite(c8, 0);
+    for (int i = 0; i < n; i++) {
+        digitalWrite(rows[i], 0);
+    }
+    for (int i = 0; i < n; i++) {
+        digitalWrite(columns[i], 0);
+    }
 }
 
 
 void setup() {
-  pinMode(r1, OUTPUT);
-  pinMode(r2, OUTPUT);
-  pinMode(r3, OUTPUT);
-  pinMode(r4, OUTPUT);
-  pinMode(r5, OUTPUT);
-  pinMode(r6, OUTPUT);
-  pinMode(r7, OUTPUT);
-  pinMode(r8, OUTPUT);
-
-  pinMode(c1, OUTPUT);
-  pinMode(c2, OUTPUT);
-  pinMode(c3, OUTPUT);
-  pinMode(c4, OUTPUT);
-  pinMode(c5, OUTPUT);
-  pinMode(c6, OUTPUT);
-  pinMode(c7, OUTPUT);
-  pinMode(c8, OUTPUT);
+    for (int i = 0; i < n; i++) {
+        pinMode(rows[i], OUTPUT);
+    }
+    for (int i = 0; i < n; i++) {
+        pinMode(columns[i], OUTPUT);
+    }
 }
 
 void loop() {
-    
     for (int i = 0; i < n; i++) {
         showFrame(i, heart[i]);
 //        showFrame(i, human[i]);
