@@ -6,6 +6,4 @@
 
 ## Демонстрация работы
 
-Ссылка на [видео](...).
-
-![Изображение](...)
+Ссылка на [видео](https://drive.google.com/file/d/17gP-w4Iwon_1BYkz15xMKGEm1wl94-eg/view?usp=sharing).
