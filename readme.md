@@ -9,3 +9,4 @@
 5. Задание ["MQTT"](led_photo_system/readme.md);
 6. Задание ["LedMatrix"](led_matrix_2x2/readme.md);
 7. Задание ["LedMatrix8x8"](led_matrix_8x8/readme.md);
+8. Задание ["Свой UART протокол"](my_serial/readme.md);
