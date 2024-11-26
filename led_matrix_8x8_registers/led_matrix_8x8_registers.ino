@@ -43,7 +43,6 @@ int human[n][n] = {{0, 0, 0, 1, 1, 0, 0, 0},
                    {0, 0, 1, 0, 0, 1, 0, 0}};
 
 
-
 void myDigitalWrite(int pin, int value) {
     if (pin < 8) {
         if (value) {
@@ -53,12 +52,20 @@ void myDigitalWrite(int pin, int value) {
             PORTD = PORTD ^ !(1 << pin);
         }
     }
-    else if (pin == A0 || pin == A1) {
+    else if (pin == A0) {
         if (value) {
-            PORTC = PORTC ^ (1 << pin);
+            PORTC = PORTC ^ (1 << 0);
         }
         else {
-            PORTC = PORTC ^ !(1 << pin);
+            PORTC = PORTC ^ !(1 << 0);
+        }
+    }
+    else if (pin == A1) {
+        if (value) {
+            PORTC = PORTC ^ (1 << 1);
+        }
+        else {
+            PORTC = PORTC ^ !(1 << 1);
         }
     }
     else if (pin >= 8) {
@@ -72,68 +79,35 @@ void myDigitalWrite(int pin, int value) {
 }
 
 void showFrame(int numberRow, int arr[8]) {
-    myDigitalWrite(c1, !arr[0]);
-    myDigitalWrite(c2, !arr[1]);
-    myDigitalWrite(c3, !arr[2]);
-    myDigitalWrite(c4, !arr[3]);
-    myDigitalWrite(c5, !arr[4]);
-    myDigitalWrite(c6, !arr[5]);
-    myDigitalWrite(c7, !arr[6]);
-    myDigitalWrite(c8, !arr[7]);
+    for (int i = 0; i < n; i++) {
+        myDigitalWrite(columns[i], !arr[i]);
+    }
     
-    if (numberRow >= 6) {
-        analogWrite(rows[numberRow], 1023);
-    }
-    else {
-        myDigitalWrite(rows[numberRow], 1);
-    }
+    myDigitalWrite(rows[numberRow], 1);
 }
-
-
-void reset() {
-    digitalWrite(r1, 0);
-    digitalWrite(r2, 0);
-    digitalWrite(r3, 0);
-    digitalWrite(r4, 0);
-    digitalWrite(r5, 0);
-    digitalWrite(r6, 0);
-    analogWrite(r7, 0);
-    analogWrite(r8, 0);
-  
-    digitalWrite(c1, 0);
-    digitalWrite(c2, 0);
-    digitalWrite(c3, 0);
-    digitalWrite(c4, 0);
-    digitalWrite(c5, 0);
-    digitalWrite(c6, 0);
-    digitalWrite(c7, 0);
-    digitalWrite(c8, 0);
-}
-
 
 void setup() {
-    DDRD = DDRD | (1 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (1 << 3) | (1 << 2) | (1 << 1) | (1 << 0);
-    DDRB = DDRB | (1 << 5) | (1 << 4) | (1 << 3) | (1 << 2) | (1 << 1) | (1 << 0);
-    DDRC = DDRC | (1 << 1) | (1 << 0);
+    DDRD = B11111111;
+    DDRB = B00111111;
+    DDRC = B00000011;
 
     cli(); // stop interrupts
     // 16мкс * 64 = 1024мкс ~ 1мс
     TCCR2A = 0;
     TCCR2B = 0;
-    TCCR2B = TCCR2B | (1 << CS11)| (1 << CS10);
+    TCCR2B = TCCR2B| (1 << CS11) | (1 << CS10);
 
     TIMSK2 = TIMSK2 | (1 << TOIE2); 
     sei(); // allow interrupts
 }
 
 ISR(TIMER2_OVF_vect) {
-  if (isHigh) {
     showFrame(currentRow, heart[currentRow]);
-    currentRow = currentRow == 7 ? 0 : currentRow+1;
-  } else {
-    reset();
-  }
-  isHigh = !isHigh;
+    if (!isHigh) {
+        currentRow = currentRow == 7 ? 0 : currentRow+1;
+    } 
+
+    isHigh = !isHigh;
 }
 
 
