@@ -1,4 +1,4 @@
-#  Задание "LedMatrix8x8"
+#  Задание "LedMatrix8x8_registers"
 
 ## Формулировка
 
