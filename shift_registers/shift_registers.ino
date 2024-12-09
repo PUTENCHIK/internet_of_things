@@ -20,10 +20,11 @@
 #define PIN_CLOCK 2
 
 
-int currentNumber = 0;
+int currentNumber = 34;
 int stage = 1;
 int amount = 1;
 byte value;
+String inputString = "";
 
 //                   .GFABCDE
 byte numbers[10] = {B11000000,   //0
@@ -37,12 +38,11 @@ byte numbers[10] = {B11000000,   //0
                     B10000000,   //8
                     B10000001,   //9
 };
-byte offByte = B11111111;
 
 void setup() {
     DDRD = B00011100;
     Serial.begin(9600);
-    value = numbers[currentNumber];
+    value = numbers[currentNumber%10];
 
 //     TIMER 2
     cli();
@@ -90,32 +90,61 @@ ISR(TIMER2_OVF_vect) {
             break;
     }
     
-    if (amount == 9) {
-        digitalWrite(PIN_LETCH, 1);
+    if (amount == 8) {
+        // amount = 1;
+        // digitalWrite(PIN_LETCH, 1);
+        value = numbers[currentNumber % 10];
+    }
+
+    if (amount == 17) {
         amount = 1;
-        value = numbers[currentNumber];
+        digitalWrite(PIN_LETCH, 1);
+        value = numbers[currentNumber / 10];
     }
 }
 
-void showNumber(int index) {
-    if (index >= 0 and index < 10) {
-        myDigitalWrite(PIN_LETCH, LOW);
-        shiftOut(PIN_DATA, PIN_CLOCK, LSBFIRST, numbers[index]);
-        myDigitalWrite(PIN_LETCH, HIGH);
-    }
-}
+// void showNumber(int index) {
+//     if (index >= 0 and index < 10) {
+//         myDigitalWrite(PIN_LETCH, LOW);
+//         shiftOut(PIN_DATA, PIN_CLOCK, LSBFIRST, numbers[index]);
+//         myDigitalWrite(PIN_LETCH, HIGH);
+//     }
+// }
 
-void off() {
-    myDigitalWrite(PIN_LETCH, LOW);
-    shiftOut(PIN_DATA, PIN_CLOCK, LSBFIRST, offByte);
-    myDigitalWrite(PIN_LETCH, HIGH);
-}
+// void off() {
+//     myDigitalWrite(PIN_LETCH, LOW);
+//     shiftOut(PIN_DATA, PIN_CLOCK, LSBFIRST, offByte);
+//     myDigitalWrite(PIN_LETCH, HIGH);
+// }
 
 void loop() {
     if (Serial.available() > 0) {
-        char symbol = Serial.read();
-        if (isDigit(symbol)) {
-            currentNumber = symbol - '0';
+        inputString = Serial.readString();
+
+        Serial.println(inputString);
+
+
+        if (inputString.length() == 2) {
+            if (isDigit(inputString[0]) && isDigit(inputString[1])) {
+                currentNumber = inputString.toInt();
+            }
+            else {
+                Serial.println("Ошибка: Введено неверное число");
+            }
+        }
+        else if (inputString.length() == 1) {
+            if (isDigit(inputString[0])) {
+                currentNumber = inputString.toInt();
+            }
+            else {
+
+                Serial.println("Ошибка: Введено неверное число");
+            }
+        }
+        else {
+            Serial.println("Ошибка: Введены лишние символы");
         }
     }
+
 }
+
