@@ -9,5 +9,6 @@
 5. Задание ["MQTT"](led_photo_system/);
 6. Задание ["LedMatrix"](led_matrix_2x2/);
 7. Задание ["LedMatrix8x8"](led_matrix_8x8/);
-8. Задание ["Свой UART протокол"](my_serial/);
-9. Задание ["ShiftRegisters"](shift_registers/)
+8. Задание ["LedMatrix8x8_registers"](led_matrix_8x8_registers/);
+9. Задание ["Свой UART протокол"](my_serial/);
+10. Задание ["ShiftRegisters"](shift_registers/)
