@@ -7,4 +7,4 @@
 
 ## Демонстрация работы
 
-Ссылка на ![видео](https://drive.google.com/file/d/1AoNX_qZAAQvc_3qdQ5A0S9Du78P30ade/view?usp=sharing)
+Ссылка на [видео](https://drive.google.com/file/d/1AoNX_qZAAQvc_3qdQ5A0S9Du78P30ade/view?usp=sharing)
