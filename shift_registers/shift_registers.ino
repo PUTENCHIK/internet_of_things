@@ -19,12 +19,15 @@
 #define PIN_LETCH 3
 #define PIN_CLOCK 2
 
-
-int currentNumber = 34;
+int startNumber = 5;
+int currentNumber = startNumber;
 int stage = 1;
 int amount = 1;
 byte value;
 String inputString = "";
+
+const int duration = 1000;
+long int timer;
 
 //                   .GFABCDE
 byte numbers[10] = {B11000000,   //0
@@ -43,6 +46,7 @@ void setup() {
     DDRD = B00011100;
     Serial.begin(9600);
     value = numbers[currentNumber%10];
+    timer = millis();
 
 //     TIMER 2
     cli();
@@ -103,20 +107,6 @@ ISR(TIMER2_OVF_vect) {
     }
 }
 
-// void showNumber(int index) {
-//     if (index >= 0 and index < 10) {
-//         myDigitalWrite(PIN_LETCH, LOW);
-//         shiftOut(PIN_DATA, PIN_CLOCK, LSBFIRST, numbers[index]);
-//         myDigitalWrite(PIN_LETCH, HIGH);
-//     }
-// }
-
-// void off() {
-//     myDigitalWrite(PIN_LETCH, LOW);
-//     shiftOut(PIN_DATA, PIN_CLOCK, LSBFIRST, offByte);
-//     myDigitalWrite(PIN_LETCH, HIGH);
-// }
-
 void loop() {
     if (Serial.available() > 0) {
         inputString = Serial.readString();
@@ -126,7 +116,8 @@ void loop() {
 
         if (inputString.length() == 2) {
             if (isDigit(inputString[0]) && isDigit(inputString[1])) {
-                currentNumber = inputString.toInt();
+                startNumber = inputString.toInt();
+                currentNumber = startNumber;
             }
             else {
                 Serial.println("Ошибка: Введено неверное число");
@@ -134,7 +125,8 @@ void loop() {
         }
         else if (inputString.length() == 1) {
             if (isDigit(inputString[0])) {
-                currentNumber = inputString.toInt();
+                startNumber = inputString.toInt();
+                currentNumber = startNumber;
             }
             else {
 
@@ -145,6 +137,8 @@ void loop() {
             Serial.println("Ошибка: Введены лишние символы");
         }
     }
-
+    if (millis() > timer + duration) {
+        currentNumber = currentNumber > 0 ? currentNumber-1 : startNumber;
+        timer = millis();
+    }
 }
-
