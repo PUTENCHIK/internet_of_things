@@ -73,10 +73,7 @@ void display() {
 
 void loop() {
     if (amount == 8) {
-        int index = analogRead(A0) / (1024 / 10 + 1);
-        Serial.print(index);
-        value = numbers[index];
-        Serial.print("\t");
+        value = analogRead(A0) / 8;
         Serial.println(value);
         digitalWrite(PIN_LETCH, 1);
         amount = 1;
