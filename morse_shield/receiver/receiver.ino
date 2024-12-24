@@ -7,7 +7,8 @@
 
 int timerStage = 0;
 int timerStageLimit = timerStagesDefault;
-// int timerStageLimitOld = timerStagesDefault;
+int timerStageLimitOld = timerStagesDefault;
+long int timerStageTimer;
 
 bool transferStarted = false;
 int sameSignalAmount = 0;
@@ -37,6 +38,7 @@ void setup() {
     sei();
 
     timer = millis();
+    timerStageTimer = millis();
 }
 
 String charFromCode(String code) {
@@ -115,7 +117,8 @@ byte getDisplayValue(char s) {
         return displayNumbers[s - '0'];
     } else {
         // a-z
-        return displayLetters[s - 'a'];
+        int index = s - 'a';
+        return displayLetters[index < 26 ? index : 25];
     }
 }
 
@@ -147,8 +150,19 @@ void display() {
 }
 
 void loop() {
-    // int resValue = analogRead(PIN_RES);
-    // int resValueProcessed = timerStagesMin
+     int resValue = analogRead(PIN_RES);
+     resValue = resValue > 1010 ? 1023 : resValue;
+     
+     int step = resValue / (1024 / (((timerStagesMax - timerStagesMin) / timerStagesDelta) + 1));
+     int resValueProcessed = timerStagesMin + (timerStagesMax - timerStagesMin) * step / 3;
+     resValueProcessed = resValueProcessed > timerStagesMax ? timerStagesMax : resValueProcessed;
+     if (resValueProcessed != timerStageLimitOld and millis() > timerStageTimer + delayTimerStageChange) {
+        Serial.print("timerStageLimit updated: ");
+        Serial.println(resValueProcessed);
+        timerStageLimit = resValueProcessed;
+        timerStageLimitOld = resValueProcessed;
+        timerStageTimer = millis();
+     }
 
     if (message.length()) {
         if (millis() > timer + delayBetweenChars) {

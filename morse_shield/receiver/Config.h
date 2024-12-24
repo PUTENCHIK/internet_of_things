@@ -89,3 +89,4 @@ int timerStagesMin = 8;
 int timerStagesMax = 32;
 int timerStagesDefault = 16;
 int timerStagesDelta = 8;
+int delayTimerStageChange = 100;
