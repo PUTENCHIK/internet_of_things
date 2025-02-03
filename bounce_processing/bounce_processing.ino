@@ -5,11 +5,9 @@ const int bounce_delay = 50;
 volatile int press_count = 0;
 volatile int bounce_count = 0;
 volatile long int press_time;
-volatile long int fall_time;
 
 volatile bool press_candidate = false;
 volatile bool true_press = false;
-volatile bool is_falling = false;
 
 void setup() {
     Serial.begin(9600);
@@ -46,12 +44,5 @@ void loop() {
         press_candidate = false;
         true_press = false;
         bounce_count = 0;
-//        is_falling = true;
-//        fall_time = millis();
     }
-
-//    if (is_falling and millis() > fall_time + bounce_delay) {
-//        is_falling = false;
-//        bounce_count = 0;
-//    }
 }
