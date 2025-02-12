@@ -1,6 +1,8 @@
 # Интернет вещей
 
-## Навигация 
+## Навигация
+
+### 5 семестр
 
 1. Задание ["Светофор"](traffic_light/);
 2. Задание ["Детектор источника света"](light_source_detector/);
@@ -12,3 +14,8 @@
 8. Задание ["LedMatrix8x8_registers"](led_matrix_8x8_registers/);
 9. Задание ["Свой UART протокол"](my_serial/);
 10. Задание ["ShiftRegisters"](shift_registers/)
+
+### 6 семестр
+
+1. Задание ["ButtonBounceProcessing"](bounce_processing/)
+3. Задание ["RangeCalibration"](range_calibration/)
