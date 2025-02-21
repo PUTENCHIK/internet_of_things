@@ -1,8 +1,10 @@
-import matplotlib.pyplot as plt
 import numpy as np
+import pathlib
+import matplotlib.pyplot as plt
 
 
-data = np.loadtxt("data0.txt", dtype="uint16")
+path = pathlib.Path(".")
+data = np.loadtxt(str(path / "range_calibration" / "data3.txt"))
 print(data.shape)
 
 z = 3
