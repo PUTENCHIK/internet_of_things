@@ -19,5 +19,7 @@
 
 1. Задание ["ButtonBounceProcessing"](bounce_processing/);
 2. Задание ["ButtonMatrix"](button_matrix/);
-3. Задание ["RangeCalibration"](range_calibration/)
-4. Задание ["Servo_аудитория"](servo_aud/)
+3. Задание ["RangeCalibration"](range_calibration/);
+4. Задание ["Servo_аудитория"](servo_aud/);
+
+* Скрипт по [управлению колёсной платформы](machine_bluetooth/)
