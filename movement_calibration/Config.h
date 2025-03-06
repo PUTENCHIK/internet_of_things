@@ -25,6 +25,7 @@
 #define PAUSE_BUTTON 'P'
 #define PULLUP '0'          // button released
 
+const int DEFAULT_SPEED = 200;
 const int PINS_AMOUNT = 4;
 const int PINS[PINS_AMOUNT] = {RIGHT_DIRECTION,
                                RIGHT_SPEED,
@@ -32,3 +33,14 @@ const int PINS[PINS_AMOUNT] = {RIGHT_DIRECTION,
                                LEFT_DIRECTION};
 
 const int MODES_AMOUNT = 3;
+enum class CalibrationObject {MoveForward, MoveBackward, MoveRight, MoveLeft};
+
+const int DEFAULT_DIRECTION_SIDE_INDEX = 1;
+const int DIRECTION_SIDE_AMOUNT = 4;
+const int DIRECTION_SIDE_COEF[4][4] =
+{
+    {LOW, HIGH, LOW, HIGH},  // right_forward, right_backward, left_forward, left_backward
+    {HIGH, LOW, LOW, HIGH},
+    {HIGH, LOW, HIGH, LOW},
+    {LOW, HIGH, HIGH, LOW}
+};
