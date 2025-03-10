@@ -1,6 +1,10 @@
 #define MCE_RX 10
 #define MCE_TX 11
 
+#define PIN_DATA 8
+#define PIN_LETCH 9
+#define PIN_CLOCK 12
+
 #define LEFT_DIRECTION 7
 #define LEFT_SPEED 6
 #define RIGHT_SPEED 5
@@ -27,20 +31,38 @@
 
 const int DEFAULT_SPEED = 200;
 const int PINS_AMOUNT = 4;
+const int PINS_AMOUNT = 7;
 const int PINS[PINS_AMOUNT] = {RIGHT_DIRECTION,
                                RIGHT_SPEED,
                                LEFT_SPEED,
-                               LEFT_DIRECTION};
+                               LEFT_DIRECTION,
+                               PIN_DATA,
+                               PIN_LETCH,
+                               PIN_CLOCK};
 
-const int MODES_AMOUNT = 3;
 enum class CalibrationObject {MoveForward, MoveBackward, MoveRight, MoveLeft};
 
 const int DEFAULT_DIRECTION_SIDE_INDEX = 1;
 const int DIRECTION_SIDE_AMOUNT = 4;
-const int DIRECTION_SIDE_COEF[4][4] =
-{
+const int DIRECTION_SIDE_COEF[4][4] = {
     {LOW, HIGH, LOW, HIGH},  // right_forward, right_backward, left_forward, left_backward
     {HIGH, LOW, LOW, HIGH},
     {HIGH, LOW, HIGH, LOW},
     {LOW, HIGH, HIGH, LOW}
+}
+
+const int MODES_AMOUNT = 3;
+
+const int SEGMENT_DELAY = 1000;
+//                         .GFABCDE
+const byte NUMBERS[10] = {B10000100,   // 0
+                          B10101111,   // 1
+                          B11001000,   // 2
+                          B10001010,   // 3
+                          B10100011,   // 4
+                          B10010010,   // 5
+                          B10010000,   // 6
+                          B10001111,   // 7
+                          B10000000,   // 8
+                          B10000010,   // 9
 };
