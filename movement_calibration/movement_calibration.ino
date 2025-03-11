@@ -9,6 +9,12 @@ int speed_right = DEFAULT_SPEED;
 int current_direction_side_index = DEFAULT_DIRECTION_SIDE_INDEX;
 CalibrationObject current_calibration_object = {CalibrationObject::MoveForward};
 
+int segmentNumber = 5;
+int segmentStage = 1;
+int segmentAmount = 1;
+byte segmentValue;
+long int segmentTimer;
+
 void setup() {
     Serial.begin(9600);
     while (!Serial) { }
@@ -20,6 +26,49 @@ void setup() {
     for (int i = 0; i < PINS_AMOUNT; i++) {
         pinMode(PINS[i], OUTPUT);
         digitalWrite(PINS[i], LOW);
+    }
+
+    segmentValue = NUMBERS[segmentNumber%10];
+    segmentTimer = millis();
+
+    cli();
+    TCCR2A = 0;
+    TCCR2B = 0;
+    TCCR2B = TCCR2B | (1 << CS11);
+    TIMSK2 = TIMSK2 | (1 << TOIE2); 
+    sei();
+}
+
+ISR(TIMER2_OVF_vect) {
+    digitalWrite(PIN_LETCH, 0);
+    switch (segmentStage) {
+        case 1:
+            segmentStage++;
+            break;
+        case 2:
+            digitalWrite(PIN_DATA, segmentValue%2);
+            segmentStage++;
+            segmentValue >>= 1;
+            break;
+        case 3:
+            digitalWrite(PIN_CLOCK, 1);
+            segmentStage++;
+            break;
+        case 4:
+            digitalWrite(PIN_CLOCK, 0);
+            segmentStage++;
+            break;
+        case 5:
+            digitalWrite(PIN_DATA, 0);
+            segmentAmount++;
+            segmentStage = 1;
+            break;
+    }
+    
+    if (segmentAmount == 8) {
+        segmentAmount = 1;
+        digitalWrite(PIN_LETCH, 1);
+        segmentValue = NUMBERS[segmentNumber%10];
     }
 }
 
@@ -73,7 +122,6 @@ void turn_right_onspot(int speed) {
          DIRECTION_SIDE_COEF[current_direction_side_index][1], 
          speed);
 }
-
 
 void changeMode(bool isNext) {
     if (isNext) {
@@ -147,5 +195,9 @@ void loop() {
                 Serial.println("Unknown command: " + command);
                 break;
         }
+    }
+    if (millis() > segmentTimer + SEGMENT_DELAY) {
+        segmentNumber = segmentNumber > 0 ? segmentNumber-1 : 9;
+        segmentTimer = millis();
     }
 }
