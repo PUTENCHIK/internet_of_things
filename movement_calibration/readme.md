@@ -37,4 +37,8 @@
 
 ## Демонстрация
 
-Ссылка на [видео]).
+Ссылка на видео.
+
+Ссылка на схему [7-сегментного индикатора](https://www.tinkercad.com/things/gLiCHLp4rRI-movementcalibration?sharecode=FIZoucqgbehtAHTuPNxtiv_5d5W9BxQ_eagK8G9BR3M).
+
+![Схема](scheme.png)

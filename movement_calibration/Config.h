@@ -30,7 +30,6 @@
 #define PULLUP '0'          // button released
 
 const int DEFAULT_SPEED = 200;
-const int PINS_AMOUNT = 4;
 const int PINS_AMOUNT = 7;
 const int PINS[PINS_AMOUNT] = {RIGHT_DIRECTION,
                                RIGHT_SPEED,
@@ -49,20 +48,20 @@ const int DIRECTION_SIDE_COEF[4][4] = {
     {HIGH, LOW, LOW, HIGH},
     {HIGH, LOW, HIGH, LOW},
     {LOW, HIGH, HIGH, LOW}
-}
+};
 
 const int MODES_AMOUNT = 3;
 
 const int SEGMENT_DELAY = 1000;
-//                         .GFABCDE
-const byte NUMBERS[10] = {B10000100,   // 0
-                          B10101111,   // 1
-                          B11001000,   // 2
-                          B10001010,   // 3
-                          B10100011,   // 4
-                          B10010010,   // 5
-                          B10010000,   // 6
-                          B10001111,   // 7
+//                         .GEDCBAF
+const byte NUMBERS[10] = {B11000000,   // 0
+                          B11110011,   // 1
+                          B10001001,   // 2
+                          B10100001,   // 3
+                          B10110010,   // 4
+                          B10100100,   // 5
+                          B10000100,   // 6
+                          B11110001,   // 7
                           B10000000,   // 8
-                          B10000010,   // 9
+                          B10100000,   // 9
 };

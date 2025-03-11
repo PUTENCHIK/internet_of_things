@@ -12,6 +12,7 @@ CalibrationObject current_calibration_object = {CalibrationObject::MoveForward};
 int segmentNumber = 5;
 int segmentStage = 1;
 int segmentAmount = 1;
+byte currentValue = NUMBERS[current_mode];
 byte segmentValue;
 long int segmentTimer;
 
@@ -28,7 +29,7 @@ void setup() {
         digitalWrite(PINS[i], LOW);
     }
 
-    segmentValue = NUMBERS[segmentNumber%10];
+    segmentValue = currentValue;
     segmentTimer = millis();
 
     cli();
@@ -68,7 +69,7 @@ ISR(TIMER2_OVF_vect) {
     if (segmentAmount == 8) {
         segmentAmount = 1;
         digitalWrite(PIN_LETCH, 1);
-        segmentValue = NUMBERS[segmentNumber%10];
+        segmentValue = currentValue;
     }
 }
 
@@ -129,10 +130,11 @@ void changeMode(bool isNext) {
             ? MODES_AMOUNT : current_mode+1;
     } else {
         current_mode = current_mode-1 < 1
-            ? 1: current_mode-1;
+            ? 1 : current_mode-1;
     }
     Serial.print("New mode: ");
     Serial.println(current_mode);
+    currentValue = NUMBERS[current_mode];
 }
 
 void changeDirectionSide(bool isNext) {
@@ -195,9 +197,5 @@ void loop() {
                 Serial.println("Unknown command: " + command);
                 break;
         }
-    }
-    if (millis() > segmentTimer + SEGMENT_DELAY) {
-        segmentNumber = segmentNumber > 0 ? segmentNumber-1 : 9;
-        segmentTimer = millis();
     }
 }
