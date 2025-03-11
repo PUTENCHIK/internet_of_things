@@ -7,7 +7,7 @@ int current_mode = 1;
 int speed_left = DEFAULT_SPEED;
 int speed_right = DEFAULT_SPEED;
 int current_direction_side_index = DEFAULT_DIRECTION_SIDE_INDEX;
-CalibrationObject current_calibration_object = {CalibrationObject::MoveForward}
+CalibrationObject current_calibration_object = {CalibrationObject::MoveForward};
 
 void setup() {
     Serial.begin(9600);
@@ -36,6 +36,10 @@ void move(bool dir_left, int speed_left, bool dir_right, int speed_right) {
     analogWrite(LEFT_SPEED, speed_left);
     digitalWrite(RIGHT_DIRECTION, dir_right);
     analogWrite(RIGHT_SPEED, speed_right);
+}
+
+void stop() {
+    move(0, 0, 0, 0);
 }
 
 
@@ -108,22 +112,36 @@ void loop() {
                 changeMode(true);
                 break;
             case T_BUTTON:
-                changeDirectionSide(true);
+                if (current_mode == 1) {
+                    changeDirectionSide(true);
+                }
+                else if (current_mode == 2) {
+
+                }
+                
                 break;
             case X_BUTTON:
-                changeDirectionSide(false);
+                if (current_mode == 1) {
+                    changeDirectionSide(false);
+                }
+                else if (current_mode == 2) {
+                    
+                }
                 break;
             case FORWARD_BUTTON:
                 go_forward(DEFAULT_SPEED);
                 break;
             case BACKWARD_BUTTON:
-                go_forward(DEFAULT_SPEED);
+                go_backward(DEFAULT_SPEED);
                 break;
             case RIGHT_BUTTON:
                 turn_right_onspot(DEFAULT_SPEED);
                 break;
             case LEFT_BUTTON:
                 turn_left_onspot(DEFAULT_SPEED);
+                break;
+            case PULLUP:
+                stop();
                 break;
             default:
                 Serial.println("Unknown command: " + command);
