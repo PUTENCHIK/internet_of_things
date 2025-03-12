@@ -23,13 +23,13 @@
 #define T_BUTTON 'T'        // triangle (up)
 #define S_BUTTON 'S'        // square (left)
 #define X_BUTTON 'X'        // X (down)
-#define O_BUTTON 'O'        // O (right)
+#define O_BUTTON 'C'        // C (right)
 
 #define START_BUTTON 'A'
 #define PAUSE_BUTTON 'P'
 #define PULLUP '0'          // button released
 
-const int DEFAULT_SPEED = 200;
+const int DEFAULT_SPEED = 0;
 const int PINS_AMOUNT = 7;
 const int PINS[PINS_AMOUNT] = {RIGHT_DIRECTION,
                                RIGHT_SPEED,
@@ -41,7 +41,7 @@ const int PINS[PINS_AMOUNT] = {RIGHT_DIRECTION,
 
 enum class CalibrationObject {MoveForward, MoveBackward, MoveRight, MoveLeft};
 
-const int DEFAULT_DIRECTION_SIDE_INDEX = 1;
+const int DEFAULT_DIRECTION_SIDE_INDEX = 0;
 const int DIRECTION_SIDE_AMOUNT = 4;
 const int DIRECTION_SIDE_COEF[4][4] = {
     {LOW, HIGH, LOW, HIGH},  // right_forward, right_backward, left_forward, left_backward
@@ -51,7 +51,8 @@ const int DIRECTION_SIDE_COEF[4][4] = {
 };
 
 const int MODES_AMOUNT = 3;
-
+const int SPEED_SETTINGS_AMOUNT = 3;
+const int TURNING_SETTINGS_AMOUNT = 4;
 const int SEGMENT_DELAY = 1000;
 //                         .GEDCBAF
 const byte NUMBERS[10] = {B11000000,   // 0
