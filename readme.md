@@ -21,5 +21,10 @@
 2. Задание ["ButtonMatrix"](button_matrix/);
 3. Задание ["RangeCalibration"](range_calibration/);
 4. Задание ["Servo_аудитория"](servo_aud/);
+5. Задание "PROJECT";
+6. Задание "H-bridge";
+7. Задание ["StateMachine"](state_machine/);
+8. Задание "Калибровка Движения";
+
 
 * Скрипт по [управлению колёсной платформы](machine_bluetooth/)
