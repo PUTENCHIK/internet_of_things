@@ -29,7 +29,7 @@
 #define PAUSE_BUTTON 'P'
 #define PULLUP '0'          // button released
 
-const int DEFAULT_SPEED = 0;
+const int DEFAULT_SPEED = 200;
 const int PINS_AMOUNT = 7;
 const int PINS[PINS_AMOUNT] = {RIGHT_DIRECTION,
                                RIGHT_SPEED,

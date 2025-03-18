@@ -292,6 +292,9 @@ void loop() {
                 turn_left_onspot();
                 break;
             case PULLUP:
+                if (start_timer != 0) {
+                    break;
+                }
                 stop();
                 break;
             default:
