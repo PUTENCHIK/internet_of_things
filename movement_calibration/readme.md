@@ -83,10 +83,29 @@
 
 Для проверки сохраненного времени поворота нажмите `▲`. Платформа начнет поворот на выбранное кол-во градусов и остановится, когда достигнет сохраненного времени.
 
-## Демонстрация
-
-Ссылка на видео.
+## Схема
 
 Ссылка на схему [7-сегментного индикатора](https://www.tinkercad.com/things/gLiCHLp4rRI-movementcalibration?sharecode=FIZoucqgbehtAHTuPNxtiv_5d5W9BxQ_eagK8G9BR3M).
 
+Программные пины RX и TX на плате, к которым соответственно подключаются TX и RX пины Bluetooth-модуля HC-05:
+
+<table>
+    <tr>
+        <th></th>
+        <th>Пин</th>
+    </tr>
+    <tr>
+        <td>RX</td>
+        <td>10</td>
+    </tr>
+    <tr>
+        <td>TX</td>
+        <td>11</td>
+    </tr>
+</table>
+
 ![Схема](scheme.png)
+
+## Демонстрация
+
+Ссылка на [видео](https://drive.google.com/file/d/1LYOoXvpPqqA1dvkOoilQZSzid7B-61kj/view?usp=sharing).
