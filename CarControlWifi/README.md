@@ -20,3 +20,7 @@
 
 ## Страничка ESP8266
 
+![Фото1](https://github.com/user-attachments/assets/93dff2f0-f8a8-4e9a-814c-be0d8974b6c1)
+
+![Фото2](https://github.com/user-attachments/assets/a378478f-4021-464c-ada7-2c6a3f153659)
+
